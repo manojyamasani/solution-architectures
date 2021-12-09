@@ -166,28 +166,3 @@ stages:
               deployToSlotOrASE: true
               SlotName: 'production'
 
-- stage: Deploy
-  dependsOn:
-  - Build
-  jobs:
-  - deployment: EchoBotDeploy
-    displayName: EchoBot Continous Deployment
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: 'echobot-prod'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureRmWebAppDeployment@4
-            inputs:
-              appType: webApp
-              ConnectionType: AzureRM
-              ConnectedServiceName: 'ARMServiceConnection'
-              ResourceGroupName: 'rg-cicd-bots'
-              WebAppName: 'appsvc-echo-bot-pXVKlzAxQkiR8'
-              DeploymentType: runFromZip
-              enableCustomDeployment: true
-              packageForLinux: '$(Pipeline.Workspace)/drop-$(Build.BuildId)/echo-bot.zip'
-              deployToSlotOrASE: true
-              SlotName: 'production'
